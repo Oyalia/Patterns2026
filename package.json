@@ -1,0 +1,29 @@
+{
+  "name": "cloudforge-patterns2026",
+  "version": "1.0.0",
+  "description": "Cloud Infrastructure Orchestrator demonstrating GoF Creational Patterns in JavaScript (ESM)",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "demo:singleton": "node src/patterns/singleton/demo.js",
+    "demo:factory-method": "node src/patterns/factory-method/demo.js",
+    "demo:abstract-factory": "node src/patterns/abstract-factory/demo.js",
+    "demo:builder": "node src/patterns/builder/demo.js",
+    "demo:prototype": "node src/patterns/prototype/demo.js"
+  },
+  "keywords": [
+    "design-patterns",
+    "gof",
+    "creational-patterns",
+    "singleton",
+    "factory-method",
+    "abstract-factory",
+    "builder",
+    "prototype",
+    "javascript",
+    "cloud-orchestrator"
+  ],
+  "author": "Nazarii",
+  "license": "MIT"
+}
