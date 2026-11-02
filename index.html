@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripCraft: Travel Architecture &amp; GoF Creational Patterns</title>
+    <meta name="description" content="TripCraft Studio: Інтерактивна система планування та бронювання подорожей на базі 5 твірних патернів GoF (JavaScript).">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body class="theme-dark">
+    <div class="app-container">
+        <!-- Top Sticky Navigation Bar -->
+        <nav class="site-nav">
+            <div class="nav-left">
+                <a href="#" class="brand-badge">
+                    <span class="brand-mark">TC</span>
+                    <span class="brand-name">TripCraft</span>
+                </a>
+                <span class="hud-label nav-subtitle">01 / Travel Architecture Studio</span>
+            </div>
+
+            <div class="nav-controls">
+                <div class="nav-stepper" title="Кількість туристів у сесії">
+                    <span class="hud-label">ТУРИСТИ:</span>
+                    <button id="nav-travelers-dec" class="stepper-btn" title="Зменшити">−</button>
+                    <span id="nav-travelers-val" class="stepper-val">2</span>
+                    <button id="nav-travelers-inc" class="stepper-btn" title="Збільшити">+</button>
+                </div>
+                <button id="currency-toggle-btn" class="nav-btn" title="Перемкнути валюту розрахунку">
+                    <span id="currency-display">ВАЛЮТА: EUR</span>
+                </button>
+                <button id="theme-toggle-btn" class="nav-btn" title="Перемкнути тему оформлення (Singleton)">
+                    <span id="theme-display">ТЕМА: DARK</span>
+                </button>
+                <button id="cart-toggle-btn" class="nav-btn nav-btn-cart" title="Відкрити кошик подорожі">
+                    <span id="cart-display">КОШИК: 0 (0 EUR)</span>
+                </button>
+                <button id="run-all-scenario-btn" class="nav-btn nav-btn-cta">
+                    Запустити спільний сценарій
+                </button>
+            </div>
+        </nav>
+
+        <!-- Pattern Navigation Strip (HUD Style) -->
+        <div class="pattern-strip" role="tablist">
+            <button class="pattern-tab active" data-tab="all">
+                <span class="eyebrow-index">[00]</span> Усі патерни (Showcase)
+            </button>
+            <button class="pattern-tab" data-tab="singleton">
+                <span class="eyebrow-index">[01]</span> Одинак (Singleton)
+            </button>
+            <button class="pattern-tab" data-tab="factory-method">
+                <span class="eyebrow-index">[02]</span> Фабричний метод (Factory Method)
+            </button>
+            <button class="pattern-tab" data-tab="abstract-factory">
+                <span class="eyebrow-index">[03]</span> Абстрактна фабрика (Abstract Factory)
+            </button>
+            <button class="pattern-tab" data-tab="builder">
+                <span class="eyebrow-index">[04]</span> Будівельник (Builder)
+            </button>
+            <button class="pattern-tab" data-tab="prototype">
+                <span class="eyebrow-index">[05]</span> Прототип (Prototype)
+            </button>
+        </div>
+
+        <!-- Sticky Section Eyebrow -->
+        <div class="section-eyebrow">
+            <p class="hud-label"><span id="eyebrow-prefix" class="eyebrow-index">00 /</span> <span id="scenario-title">Спільний сценарій організації подорожі</span></p>
+            <p class="hud-label" style="color: var(--text-faint);">TripCraft Native Architecture v1.0</p>
+        </div>
+
+        <!-- Context & Action Toolbar -->
+        <div class="toolbar-bar">
+            <div id="scenario-desc" class="toolbar-desc">
+                Комплексний сценарій організації подорожі: Singleton зберігає сесію та бюджет, Abstract Factory адаптує тему оформлення, Factory Method створює готелі, перельоти та екскурсії, Builder компонує повний маршрут, а Prototype клонує готові туристичні пакети.
+            </div>
+            <div id="action-controls" class="toolbar-actions">
+                <!-- Action buttons rendered dynamically based on active tab -->
+            </div>
+        </div>
+
+        <!-- Two-Column Studio Layout -->
+        <main class="studio-layout">
+            <!-- Left Column: Canvas Grid -->
+            <section class="canvas-section">
+                <div class="canvas-header">
+                    <span class="hud-label">Робоче поле компонентів туру</span>
+                    <button id="clear-canvas-btn" class="btn btn-outline btn-sm">Очистити поле</button>
+                </div>
+                <!-- Dynamic Filters & Search -->
+                <div class="canvas-controls-bar">
+                    <div class="filter-chips">
+                        <button class="filter-chip active" data-filter="all">Всі компоненти</button>
+                        <button class="filter-chip" data-filter="hotel">Готелі</button>
+                        <button class="filter-chip" data-filter="flight">Перельоти</button>
+                        <button class="filter-chip" data-filter="excursion">Екскурсії</button>
+                        <button class="filter-chip" data-filter="builder">Маршрути (Builder)</button>
+                        <button class="filter-chip" data-filter="prototype">Пакети (Prototype)</button>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="canvas-search-input" class="tc-search-input" placeholder="Пошук у каталозі (місто, рейс, готель)...">
+                    </div>
+                </div>
+                <div id="canvas-grid" class="canvas-grid">
+                    <!-- Dynamic PageElements appended here -->
+                </div>
+            </section>
+
+            <!-- Right Column: Inspector & Telemetry -->
+            <aside class="inspector-section">
+                <div class="inspector-header">
+                    <span class="hud-label">Телеметрія бронювань</span>
+                    <span class="hud-label" style="color: var(--accent-amber);">LIVE AUDIT</span>
+                </div>
+
+                <div class="telemetry-metrics-grid">
+                    <div class="telemetry-cell">
+                        <div id="metric-budget" class="telemetry-value">0 EUR</div>
+                        <div class="telemetry-label">Загальний бюджет туру</div>
+                    </div>
+                    <div class="telemetry-cell">
+                        <div id="metric-travelers" class="telemetry-value">2</div>
+                        <div class="telemetry-label">Кількість туристів</div>
+                    </div>
+                    <div class="telemetry-cell">
+                        <div id="metric-created" class="telemetry-value">0</div>
+                        <div class="telemetry-label">Створено компонентів</div>
+                    </div>
+                    <div class="telemetry-cell">
+                        <div id="metric-clones" class="telemetry-value">0</div>
+                        <div class="telemetry-label">Клоновано пакетів</div>
+                    </div>
+                </div>
+
+                <div class="inspector-header">
+                    <span class="hud-label">Журнал аудиту (TripEventBus)</span>
+                    <button id="clear-logs-btn" class="btn btn-outline btn-sm">Очистити</button>
+                </div>
+
+                <div id="console-log" class="log-console">
+                    <!-- Real-time event log entries -->
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Slide-Over Cart / Itinerary Drawer -->
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="cart-drawer-header">
+            <div>
+                <div class="hud-label">ITINERARY BASKET</div>
+                <h3 class="cart-drawer-title">Мій маршрут подорожі</h3>
+            </div>
+            <button id="cart-close-btn" class="btn btn-outline btn-sm">✕ Закрити</button>
+        </div>
+        <div id="cart-items-list" class="cart-items-list">
+            <!-- Dynamic cart items -->
+        </div>
+        <div class="cart-drawer-footer">
+            <div class="cart-summary-row">
+                <span class="hud-label">ЗАГАЛОМ ДО СПЛАТИ</span>
+                <span id="cart-total-amount" class="cart-total-val">0 EUR</span>
+            </div>
+            <div class="cart-actions-row">
+                <button id="cart-checkout-btn" class="btn btn-primary btn-block">Оформити ваучер подорожі</button>
+                <button id="cart-clear-btn" class="btn btn-outline btn-block">Очистити кошик</button>
+            </div>
+        </div>
+    </div>
+    <div id="cart-backdrop" class="cart-backdrop"></div>
+
+    <!-- Boarding Pass / Travel Voucher Modal -->
+    <div id="voucher-modal" class="modal-overlay">
+        <div class="voucher-card">
+            <div class="voucher-header">
+                <div class="voucher-brand">
+                    <span class="brand-mark">TC</span>
+                    <span class="brand-name">TripCraft Studio</span>
+                </div>
+                <div class="voucher-meta">
+                    <div class="hud-label">TRAVEL VOUCHER &amp; ITINERARY</div>
+                    <div id="voucher-id" class="voucher-code">TC-2026-84920</div>
+                </div>
+            </div>
+            <div class="voucher-body">
+                <div class="voucher-grid">
+                    <div class="voucher-cell">
+                        <span class="hud-label">ГОЛОВНИЙ ТУРИСТ</span>
+                        <div id="voucher-traveler-name" class="voucher-value">Олександр Коваленко</div>
+                    </div>
+                    <div class="voucher-cell">
+                        <span class="hud-label">КІЛЬКІСТЬ ОСІБ</span>
+                        <div id="voucher-travelers-count" class="voucher-value">2 особи</div>
+                    </div>
+                    <div class="voucher-cell">
+                        <span class="hud-label">СТАТУС БРОНЮВАННЯ</span>
+                        <div class="voucher-value" style="color:var(--accent-emerald);">CONFIRMED &amp; ISSUED</div>
+                    </div>
+                    <div class="voucher-cell">
+                        <span class="hud-label">ДАТА ВИДАЧІ</span>
+                        <div id="voucher-date" class="voucher-value">02.11.2026</div>
+                    </div>
+                </div>
+
+                <div class="voucher-items-section">
+                    <div class="hud-label" style="margin-bottom:8px;">ЗАТВЕРДЖЕНІ ПОЗИЦІЇ ТУРУ:</div>
+                    <div id="voucher-items-list" class="voucher-items-list">
+                        <!-- Itemized list -->
+                    </div>
+                </div>
+
+                <div class="voucher-footer-row">
+                    <div>
+                        <div class="hud-label">АРХІТЕКТУРНИЙ АУДИТ GOF</div>
+                        <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent-amber);">
+                            Singleton • Factory Method • Abstract Factory • Builder • Prototype
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="hud-label">СУМА ВАУЧЕРА</div>
+                        <div id="voucher-total" class="voucher-total-val">0 EUR</div>
+                    </div>
+                </div>
+            </div>
+            <div class="voucher-actions">
+                <button id="voucher-print-btn" class="btn btn-primary">Друк ваучера / PDF</button>
+                <button id="voucher-close-btn" class="btn btn-outline">Закрити</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HUD Toast Container -->
+    <div id="hud-toast-container" class="hud-toast-container"></div>
+</body>
+</html>
