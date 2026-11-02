@@ -1,16 +1,11 @@
 {
-  "name": "cloudforge-patterns2026",
+  "name": "tripcraft-patterns2026",
   "version": "1.0.0",
-  "description": "Cloud Infrastructure Orchestrator demonstrating GoF Creational Patterns in JavaScript (ESM)",
-  "main": "src/index.js",
+  "description": "TripCraft: GoF Creational Design Patterns in JavaScript",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "demo:singleton": "node src/patterns/singleton/demo.js",
-    "demo:factory-method": "node src/patterns/factory-method/demo.js",
-    "demo:abstract-factory": "node src/patterns/abstract-factory/demo.js",
-    "demo:builder": "node src/patterns/builder/demo.js",
-    "demo:prototype": "node src/patterns/prototype/demo.js"
+    "start": "npx serve .",
+    "test": "node tests/runner.js"
   },
   "keywords": [
     "design-patterns",
@@ -22,7 +17,7 @@
     "builder",
     "prototype",
     "javascript",
-    "cloud-orchestrator"
+    "travel-planner"
   ],
   "author": "Nazarii",
   "license": "MIT"
